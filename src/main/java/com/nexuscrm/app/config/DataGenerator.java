@@ -1,7 +1,7 @@
 package com.nexuscrm.app.config;
 
-import com.nexuscrm.app.model.Persona;
-import com.nexuscrm.app.repository.PersonaRepository;
+import com.nexuscrm.app.model.User;
+import com.nexuscrm.app.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 public class DataGenerator {
 
     @Bean
-    CommandLineRunner initDatabase(PersonaRepository repository) {
+    CommandLineRunner initDatabase(UserRepository repository) {
         return args -> {
-            repository.save(new Persona("Juan ","Perez", "juan@mail.com"));
-            repository.save(new Persona("Maria ","Garcia", "maria@mail.com"));
-            repository.save(new Persona("Luis ", "Lopez", "luis@mail.com"));
+            repository.save(new User("Juan ","Perez", "juan@mail.com"));
+            repository.save(new User("Maria ","Garcia", "maria@mail.com"));
+            repository.save(new User("Luis ", "Lopez", "luis@mail.com"));
 
             System.out.println("--- Datos de prueba insertados en H2 ---");
         };
