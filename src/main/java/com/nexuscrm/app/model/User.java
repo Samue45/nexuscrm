@@ -10,7 +10,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Entity
-@Table(name = "users") // Define el nombre de la tabla en la DB
+@Table(name = "user") // Define el nombre de la tabla en la DB
 public class User {
 
     @Id
@@ -20,10 +20,11 @@ public class User {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @JsonProperty("last_name")
     @Column(nullable = false, length = 100)
     private String lastName;
 
-    @Column(unique = true, nullable = true)
+    @Column(unique = true)
     @JsonProperty("email") // Fuerza a que Bruno use este nombre
     private String email;
 
