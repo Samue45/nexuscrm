@@ -2,17 +2,21 @@ package com.nexuscrm.app.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor // <--- Constructor sin args necesario para JPA
 @Entity
-@Table(name = "user") // Define el nombre de la tabla en la DB
+@Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,24 +29,24 @@ public class User {
     private String lastName;
 
     @Column(unique = true)
-    @JsonProperty("email") // Fuerza a que Bruno use este nombre
+    @JsonProperty("email")
     private String email;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "birthday")
     private Date birthday;
 
-    // --- Constructores ---
-
-    public User() {
-        // Requerido por JPA
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_books",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> favoriteBooks = new HashSet<>();
 
     public User(String name, String lastName, String email) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
     }
-
-
 }

@@ -1,15 +1,18 @@
 package com.nexuscrm.app.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "book")
+@Table(name = "books")
 public class Book {
 
     @Id
@@ -19,25 +22,34 @@ public class Book {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, length = 150)
-    private String author;
-
-    @Column(unique = true, length = 20)
-    private String isbn;
-
     @Column(name = "published_date")
     private LocalDate publishedDate;
 
     @Column(nullable = false)
     private Integer pages;
 
-    public Book(){}
+    //Muchos libros pueden pertenecer a un único autor
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "author_id")
+    private Author author;
 
-    public Book(String title, String author, String isbn, LocalDate publishedDate, Integer pages) {
-        this.title = title;
-        this.author = author;
-        this.isbn = isbn;
-        this.publishedDate = publishedDate;
-        this.pages = pages;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "detail_id", referencedColumnName = "id")
+    private TechDetail techDetail;
+
+    @ManyToMany(mappedBy = "favoriteBooks")
+    private Set<User> users = new HashSet<>();
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book book)) return false;
+        return id != null && id.equals(book.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
