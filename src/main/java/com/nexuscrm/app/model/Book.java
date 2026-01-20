@@ -41,6 +41,11 @@ public class Book {
     private Set<User> users = new HashSet<>();
 
 
+    public Book(String title, Author author) {
+        this.title = title;
+        this.author = author;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

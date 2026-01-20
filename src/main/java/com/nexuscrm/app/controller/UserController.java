@@ -27,12 +27,12 @@ public class UserController {
     }
 
     @GetMapping("/buscar/{name}")
-    public List<User> searchUser(@PathVariable String name) {
+    public User searchUser(@PathVariable String name) {
         return service.findUserByName(name);
     }
 
     @GetMapping("/buscar")
-    public List<User> searchUserByParameter(@RequestParam String name) {
+    public User searchUserByParameter(@RequestParam String name) {
         return service.findUserByName(name);
     }
 }

@@ -21,8 +21,8 @@ public class UserService {
         return repository.findAll();
     }
 
-    public List<User> findUserByName(String name){
-        return repository.findByName(name);
+    public User findUserByName(String name){
+        return repository.findUserByName(name);
     }
 
     // Guardar o actualizar una persona

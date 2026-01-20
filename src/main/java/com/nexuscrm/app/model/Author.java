@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,5 +28,10 @@ public class Author {
     public void addBook(Book book){
         books.add(book);
         book.setAuthor(this);
+    }
+
+    public Author(String name, String bibliography) {
+        this.name = name;
+        this.bibliography = bibliography;
     }
 }

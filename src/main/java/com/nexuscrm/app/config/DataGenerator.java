@@ -21,24 +21,17 @@ public class DataGenerator {
     @Bean
     CommandLineRunner initData(AuthorRepository authorRepo, BookRepository bookRepo, UserRepository userRepo) {
         return args -> {
-            // --- AUTORES ---
-            Author a1 = new Author();
-            a1.setName("J.K. Rowling");
-            a1.setBibliography("Autora británica, famosa por la saga de Harry Potter.");
-
-            Author a2 = new Author();
-            a2.setName("George R.R. Martin");
-            a2.setBibliography("Autor estadounidense, conocido por la saga Canción de Hielo y Fuego.");
+            // --- AUTHORS ---
+            Author a1 = new Author("J.K. Rowling","Autora británica, famosa por la saga de Harry Potter." );
+            Author a2 = new Author("George R.R. Martin","Autor estadounidense, conocido por la saga Canción de Hielo y Fuego.");
 
             authorRepo.save(a1);
             authorRepo.save(a2);
 
-            // --- LIBROS con TechDetail ---
-            Book b1 = new Book();
-            b1.setTitle("Harry Potter y la Piedra Filosofal");
+            // --- BOOKS with TechDetail ---
+            Book b1 = new Book("Harry Potter y la Piedra Filosofal", a1);
             b1.setPublishedDate(LocalDate.of(1997, 6, 26));
             b1.setPages(223);
-            b1.setAuthor(a1);
             TechDetail td1 = new TechDetail();
             td1.setIsbn("9780747532699");
             td1.setEditorial("Bloomsbury");
@@ -46,11 +39,9 @@ public class DataGenerator {
             b1.setTechDetail(td1);
             a1.addBook(b1);
 
-            Book b2 = new Book();
-            b2.setTitle("Juego de Tronos");
+            Book b2 = new Book("Juego de Tronos", a2);
             b2.setPublishedDate(LocalDate.of(1996, 8, 6));
             b2.setPages(694);
-            b2.setAuthor(a2);
             TechDetail td2 = new TechDetail();
             td2.setIsbn("9780553103540");
             td2.setEditorial("Bantam Books");

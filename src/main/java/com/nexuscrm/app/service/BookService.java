@@ -100,4 +100,8 @@ public class BookService {
 
         return List.copyOf(user.getFavoriteBooks());
     }
+
+    public List<Book> findByAuthorName(String name) {
+        return bookRepository.findAuthorByName(name);
+    }
 }
