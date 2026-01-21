@@ -1,91 +1,81 @@
 NexusCRM 🚀
 ===========
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Samue45/nexuscrm)
-**NexusCRM** es una plataforma de gestión integral desarrollada con el ecosistema Java, utilizando **Spring Boot** para el backend y **Vaadin Flow** para una interfaz de usuario moderna y reactiva sin salir de Java. El sistema incluye gestión de usuarios, biblioteca personal y detalles técnicos de activos.
+
+**NexusCRM** es una plataforma de gestión integral desarrollada con el ecosistema Java. Utiliza **Spring Boot** para un backend robusto y **Vaadin Flow** para crear interfaces modernas y reactivas 100% en Java.
+
+🧠 Consulta la Documentación con IA
+-----------------------------------
+
+¿Tienes dudas sobre cómo funciona el código o cómo extender una funcionalidad?
+
+NexusCRM está integrado con DeepWiki, lo que te permite hacer preguntas en lenguaje natural sobre este repositorio:
+
+👉 [**Preguntar a DeepWiki sobre NexusCRM**](https://deepwiki.com/Samue45/nexuscrm)
 
 🛠️ Stack Tecnológico
 ---------------------
 
-*   **Backend:** Java 17+, Spring Boot 3.x.
-    
-*   **Frontend:** Vaadin Flow (Componentes UI basados en Java).
-    
-*   **Persistencia:** Spring Data JPA / Hibernate.
-    
-*   **Base de Datos:** H2 / MySQL / PostgreSQL (Soporta múltiples via JPA).
-    
-*   **Utilidades:** Lombok, Jackson (JSON Mapping).
-    
+**CapaTecnologíasBackend**Java 17+, Spring Boot 3.x**Frontend**Vaadin Flow (UI reactiva en Java)**Persistencia**Spring Data JPA / Hibernate**Bases de Datos**H2, MySQL, PostgreSQL (Configurable via JPA)**Utilidades**Lombok, Jackson (JSON)
 
-📂 Estructura del Proyecto
---------------------------
+📂 Arquitectura y Estructura
+----------------------------
 
-Basado en la arquitectura del repositorio:
+El proyecto sigue un patrón de diseño limpio para separar la lógica de negocio de la interfaz de usuario:
 
 *   model/: Entidades JPA (User, Book, Author, TechDetail).
     
-*   view/: Vistas de la interfaz de usuario con Vaadin (MainView, LibraryView).
+*   view/: Interfaz de usuario con Vaadin (Login, LibraryView).
     
-*   service/: Lógica de negocio y procesamiento de datos.
+*   service/: Capa de servicios y lógica de negocio.
     
-*   dto/: Objetos de transferencia de datos para desacoplar la vista del modelo.
+*   dto/: Objetos de transferencia para evitar problemas de _Lazy Loading_.
     
-*   repository/: Interfaces de acceso a datos (Spring Data Repositories).
+*   repository/: Abstracción de acceso a datos.
     
 
-✨ Funcionalidades Implementadas
--------------------------------
+✨ Funcionalidades Destacadas
+----------------------------
 
 ### 🔑 Sistema de Autenticación
 
-Implementado en MainView.java, utiliza el componente LoginForm de Vaadin.
-
-*   Validación de credenciales contra la base de datos.
+*   Validación de credenciales contra base de datos.
     
-*   Manejo de sesión mediante VaadinSession para persistir el usuario logueado.
+*   Gestión de sesiones mediante VaadinSession.
     
-
-### 📚 Gestión de Biblioteca Personal
-
-Localizada en LibraryView.java, esta sección permite:
-
-*   Visualización de libros en un Grid de alto rendimiento.
-    
-*   Uso de **DTOs** (BookDTO) para optimizar la carga de datos y evitar problemas de Lazy Loading.
-    
-*   Relaciones complejas: Muchos-a-Muchos entre Usuarios y Libros.
+*   Vistas protegidas con la anotación @PermitAll.
     
 
-### ⚙️ Modelo de Datos Avanzado
+### 📚 Gestión de Activos (Biblioteca)
 
-El sistema cuenta con una estructura relacional robusta:
+*   Visualización de datos en **Grids** de alto rendimiento.
+    
+*   Relaciones complejas de base de datos:
+    
+    *   **1:1**: Libros y sus detalles técnicos específicos.
+        
+    *   **N:1**: Clasificación por autores.
+        
+    *   **N:N**: Relación entre usuarios y sus colecciones personales.
+        
 
-*   **Relación 1:1**: Libros con detalles técnicos (TechDetail).
-    
-*   **Relación N:1**: Libros asociados a un autor.
-    
-*   **Relación N:N**: Usuarios y sus colecciones de libros.
-    
-
-🚀 Configuración e Instalación
-------------------------------
+🚀 Instalación y Uso Rápido
+---------------------------
 
 1.  Bashgit clone https://github.com/Samue45/nexuscrm.gitcd nexuscrm
     
-2.  **Requisitos:**
+2.  **Requisitos:** JDK 17+ y Maven 3.8+.
     
-    *   JDK 17 o superior.
-        
-    *   Maven 3.8+.
-        
 3.  Bashmvn spring-boot:run
     
-4.  **Acceso:**Abre tu navegador en http://localhost:8080.
+4.  **Acceso:** Abre [http://localhost:8080](https://www.google.com/search?q=http://localhost:8080).
     
 
-📝 Notas de Desarrollo
-----------------------
+📝 Notas para Desarrolladores
+-----------------------------
 
-*   **Lombok:** El proyecto requiere tener instalado el plugin de Lombok en tu IDE (IntelliJ/VSCode) para procesar las anotaciones @Getter, @Setter y @NoArgsConstructor.
+*   **Lombok:** Asegúrate de tener instalado el plugin en tu IDE para que las anotaciones @Getter/@Setter funcionen correctamente.
     
-*   **Seguridad:** Las vistas protegidas utilizan la anotación @PermitAll y requieren una sesión activa de Vaadin.
+*   **Extensibilidad:** Gracias a JPA, puedes cambiar de una base de datos H2 (memoria) a una productiva (PostgreSQL/MySQL) simplemente editando el application.properties.
+    
+
+_Mantenido por_ [_Samuel_](https://www.google.com/search?q=https://github.com/Samue45)
