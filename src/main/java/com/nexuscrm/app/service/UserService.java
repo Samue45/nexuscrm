@@ -39,4 +39,8 @@ public class UserService {
     public void delete(User user) {
         repository.delete(user);
     }
+
+    public User findByEmail(String mail) {
+        return repository.findByEmail(mail);
+    }
 }

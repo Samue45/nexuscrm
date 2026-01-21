@@ -55,53 +55,16 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    /* ===================== */
-    /* LÓGICA DE NEGOCIO     */
-    /* FAVORITOS / LECTURA   */
-    /* ===================== */
 
-    @Transactional
-    public void addToFavorites(Long userId, Long bookId) {
+    public List<Book> getUserBooks(Long userId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
-        Book book = findById(bookId);
-
-        // ❌ Regla de negocio: no duplicados
-        if (user.getFavoriteBooks().contains(book)) {
-            throw new IllegalStateException("El libro ya está en favoritos");
-        }
-
-        user.getFavoriteBooks().add(book);
-
-        // Guardamos el lado propietario
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void removeFromFavorites(Long userId, Long bookId) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-
-        boolean removed = user.getFavoriteBooks()
-                .removeIf(book -> book.getId().equals(bookId));
-
-        if (removed) {
-            userRepository.save(user);
-        }
-    }
-
-    public List<Book> getUserFavorites(Long userId) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
-
-        return List.copyOf(user.getFavoriteBooks());
+        return List.copyOf(user.getUserBooks());
     }
 
     public List<Book> findByAuthorName(String name) {
-        return bookRepository.findAuthorByName(name);
+        return bookRepository.findByAuthorName(name);
     }
 }

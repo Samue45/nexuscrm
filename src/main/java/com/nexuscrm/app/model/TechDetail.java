@@ -1,6 +1,7 @@
 package com.nexuscrm.app.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ public class TechDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "El ISBN es obligatorio")
     @Column(nullable = false, unique = true)
     private String isbn;
 

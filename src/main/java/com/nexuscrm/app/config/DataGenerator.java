@@ -53,18 +53,18 @@ public class DataGenerator {
             bookRepo.save(b2);
 
             // --- USUARIOS ---
-            User u1 = new User("Juan", "Perez", "juan@mail.com");
+            User u1 = new User("Juan", "Perez", "juan@mail.com", "1234");
             u1.setBirthday(new Date());
             HashSet<Book> fav1 = new HashSet<>();
             fav1.add(b1);
-            u1.setFavoriteBooks(fav1);
+            u1.setUserBooks(fav1);
 
-            User u2 = new User("María", "García", "maria@mail.com");
+            User u2 = new User("María", "García", "maria@mail.com", "abcd");
             u2.setBirthday(new Date());
             HashSet<Book> fav2 = new HashSet<>();
             fav2.add(b1);
             fav2.add(b2);
-            u2.setFavoriteBooks(fav2);
+            u2.setUserBooks(fav2);
 
             userRepo.save(u1);
             userRepo.save(u2);

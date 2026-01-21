@@ -3,7 +3,6 @@ package com.nexuscrm.app;
 import com.nexuscrm.app.model.Author;
 import com.nexuscrm.app.model.Book;
 import com.nexuscrm.app.repository.BookRepository;
-import com.nexuscrm.app.repository.UserRepository;
 import com.nexuscrm.app.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,13 +35,13 @@ public class BookServiceTest {
         );
 
         //2º We create an example query using Mockito
-        when(bookRepository.findAuthorByName("Gabriel García Márquez")).thenReturn(fictitiousBooks);
+        when(bookRepository.findByAuthorName("Gabriel García Márquez")).thenReturn(fictitiousBooks);
 
         //3º We search an author by name to can get his books
         List<Book> result = bookService.findByAuthorName("Gabriel García Márquez");
 
         // 3. Assert (Verificar)
         assertEquals(2, result.size());
-        verify(bookRepository).findAuthorByName("Gabriel García Márquez");
+        verify(bookRepository).findByAuthorName("Gabriel García Márquez");
     }
 }

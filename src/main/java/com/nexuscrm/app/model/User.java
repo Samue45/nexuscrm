@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor // <--- Constructor sin args necesario para JPA
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -32,21 +32,25 @@ public class User {
     @JsonProperty("email")
     private String email;
 
+    @Column(nullable = false, length = 255)
+    private String password;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "birthday")
     private Date birthday;
 
     @ManyToMany
     @JoinTable(
-            name = "user_favorite_books",
+            name = "user_books",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private Set<Book> favoriteBooks = new HashSet<>();
+    private Set<Book> userBooks = new HashSet<>();
 
-    public User(String name, String lastName, String email) {
+    public User(String name, String lastName, String email, String password) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
     }
 }

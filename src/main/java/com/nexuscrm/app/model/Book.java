@@ -1,25 +1,27 @@
 package com.nexuscrm.app.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "books")
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String title;
 
     @Column(name = "published_date")
@@ -28,18 +30,16 @@ public class Book {
     @Column(nullable = false)
     private Integer pages;
 
-    //Muchos libros pueden pertenecer a un único autor
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "detail_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "detail_id")
     private TechDetail techDetail;
 
-    @ManyToMany(mappedBy = "favoriteBooks")
+    @ManyToMany(mappedBy = "userBooks")
     private Set<User> users = new HashSet<>();
-
 
     public Book(String title, Author author) {
         this.title = title;
