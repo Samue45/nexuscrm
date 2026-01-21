@@ -1,62 +1,71 @@
 package com.nexuscrm.app.service;
 
-import com.nexuscrm.app.model.Book;
+import com.nexuscrm.app.dto.UserDTO;
 import com.nexuscrm.app.model.User;
 import com.nexuscrm.app.repository.UserRepository;
-import com.vaadin.flow.server.VaadinSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
+@Slf4j                  // Reemplaza System.err por un logger profesional
 @Service
+@RequiredArgsConstructor // Crea el constructor para 'repository' automáticamente (Lombok)
 public class UserService {
 
     private final UserRepository repository;
 
-    // Inyección por constructor (Spring la detecta automáticamente)
-    public UserService(UserRepository repository) {
-        this.repository = repository;
-    }
+    // --- CONSULTAS ---
 
-    // Listar todas las personas
     public List<User> findAll() {
         return repository.findAll();
     }
 
-    public User findUserByName(String name){
+    public User findUserByName(String name) {
         return repository.findUserByName(name);
     }
 
-    // Guardar o actualizar una persona
-    public User save(User user) {
-        if (user == null) {
-            System.err.println("La persona es nula.");
-            return user;
-        }
-        repository.save(user);
-        return user;
+    public User findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 
-    // Eliminar una persona
+    /**
+     * Obtiene el DTO de un usuario por nombre.
+     * Uso de Optional para evitar retornos null.
+     */
+    public Optional<UserDTO> getUserInfo(String username) {
+        return Optional.ofNullable(repository.findUserByName(username))
+                .map(this::mapToDTO);
+    }
+
+    // --- OPERACIONES DE PERSISTENCIA ---
+
+    @Transactional
+    public User save(User user) {
+        if (user == null) {
+            log.error("Intento de guardar un usuario nulo.");
+            throw new IllegalArgumentException("El usuario no puede ser nulo");
+        }
+        return repository.save(user);
+    }
+
+    @Transactional
     public void delete(User user) {
         repository.delete(user);
     }
 
-    public User findByEmail(String mail) {
-        return repository.findByEmail(mail);
-    }
+    // --- MAPEO (Lógica de conversión privada) ---
 
-    @Transactional(readOnly = true)
-    public Set<Book> findBooksForCurrentUser() {
-        User sessionUser = (User) VaadinSession.getCurrent().getAttribute("usuarioLogueado");
-        if (sessionUser == null) return Collections.emptySet();
-
-        // Esta consulta trae todo el grafo de objetos necesario
-        User user = repository.findUserByNameWithBooksAndAuthors(sessionUser.getName());
-
-        return (user != null) ? user.getUserBooks() : Collections.emptySet();
+    private UserDTO mapToDTO(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getBirthday()
+        );
     }
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor()
 @Table(name = "author")
 public class Author {
 

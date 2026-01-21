@@ -1,41 +1,55 @@
 package com.nexuscrm.app.view;
 
-import com.nexuscrm.app.model.Book;
+import com.nexuscrm.app.dto.BookDTO;
 import com.nexuscrm.app.service.BookService;
-import com.nexuscrm.app.service.UserService;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import jakarta.annotation.security.PermitAll; // Importante para seguridad
+import jakarta.annotation.security.PermitAll;
 
 @Route("library")
 @PermitAll
 public class LibraryView extends VerticalLayout {
 
-    public LibraryView(UserService userService) {
+    // Usamos BookService que es el que ahora tiene el método de DTOs
+    public LibraryView(BookService bookService) {
 
-        H1 title = new H1("Mis Libros"); // Cambiamos el título para reflejar el contexto
+        setSizeFull();
+        setAlignItems(Alignment.CENTER);
 
-        Grid<Book> grid = new Grid<>(Book.class, false); // false para configurar columnas manualmente
+        H1 title = new H1("Mi Biblioteca Personal");
 
-        // Configuramos columnas manualmente para controlar qué se muestra (Author es objeto)
-        grid.addColumn(Book::getTitle).setHeader("Título");
-        grid.addColumn(book -> {
-            if (book.getAuthor() != null) {
-                return book.getAuthor().getName();
-            }
-            return "Autor desconocido";
-        }).setHeader("Autor");// Asumiendo que Author tiene getName()
-        grid.addColumn(Book::getPublishedDate).setHeader("Fecha Publicación");
-        grid.addColumn(Book::getPages).setHeader("Páginas");
+        // CAMBIO 1: El Grid ahora es de tipo BookDTO
+        Grid<BookDTO> grid = new Grid<>(BookDTO.class, false);
 
-        // --- EL CAMBIO CLAVE ---
-        // En lugar de findAll(), llamamos al método filtrado
-        // Dentro del constructor de LibraryView
-        grid.setItems(userService.findBooksForCurrentUser());
+        // CAMBIO 2: Las columnas leen directamente del DTO (campos planos)
+        grid.addColumn(BookDTO::getTitle)
+                .setHeader("Título")
+                .setSortable(true)
+                .setFlexGrow(2); // Le damos más espacio al título
+
+        grid.addColumn(BookDTO::getAuthorName)
+                .setHeader("Autor")
+                .setSortable(true);
+
+        grid.addColumn(BookDTO::getPublishedDate)
+                .setHeader("Fecha Publicación");
+
+        grid.addColumn(BookDTO::getIsbn)
+                .setHeader("ISBN");
+
+        grid.addColumn(BookDTO::getPages)
+                .setHeader("Páginas");
+
+        // CAMBIO 3: Llamamos al método que devuelve DTOs
+        // Este método ya maneja la transacción y el mapeo internamente
+        grid.setItems(bookService.findBooksDTOForCurrentUser());
 
         add(title, grid);
-        setSizeFull();
+
+        // Estilo extra para que el grid ocupe el espacio disponible
+        grid.setSizeFull();
+        expand(grid);
     }
 }
