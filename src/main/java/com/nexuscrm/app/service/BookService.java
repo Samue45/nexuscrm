@@ -4,10 +4,15 @@ import com.nexuscrm.app.model.Book;
 import com.nexuscrm.app.model.User;
 import com.nexuscrm.app.repository.BookRepository;
 import com.nexuscrm.app.repository.UserRepository;
+import com.vaadin.flow.server.VaadinSession;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BookService {
@@ -56,15 +61,21 @@ public class BookService {
     }
 
 
-    public List<Book> getUserBooks(Long userId) {
+    @Transactional
+    public Set<Book> findBooksForCurrentUser() {
+        // 1. Obtener el usuario de la sesión de Vaadin
+        User sessionUser = (User) VaadinSession.getCurrent().getAttribute("usuarioLogueado");
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        if (sessionUser == null) return new HashSet<>();
 
-        return List.copyOf(user.getUserBooks());
+        // 2. IMPORTANTE: Volver a cargar el usuario desde el repositorio
+        // para que la sesión de Hibernate esté activa y pueda leer los libros.
+        return userRepository.findById(sessionUser.getId())
+                .map(User::getUserBooks)
+                .orElse(new HashSet<>());
     }
 
     public List<Book> findByAuthorName(String name) {
-        return bookRepository.findByAuthorName(name);
+        return bookRepository.findByAuthor_Name(name);
     }
 }
