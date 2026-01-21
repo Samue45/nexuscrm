@@ -1,6 +1,6 @@
 NexusCRM 🚀
 ===========
-
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Samue45/nexuscrm)
 **NexusCRM** es una plataforma de gestión integral desarrollada con el ecosistema Java, utilizando **Spring Boot** para el backend y **Vaadin Flow** para una interfaz de usuario moderna y reactiva sin salir de Java. El sistema incluye gestión de usuarios, biblioteca personal y detalles técnicos de activos.
 
 🛠️ Stack Tecnológico
